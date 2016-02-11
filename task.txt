@@ -1,0 +1,11 @@
+Design an API and create a web service that would collect, store and deliver crowdsourced information about public transport (stations, lines, schedules).
+
+Use case: user in a small town wants to add bus stops and bus schedules to the crowdsourced database so that it can be used for public transport routing in apps and online services.
+
+* Minimum features: 
+** store station information (station name, location, lines that have a stop there)
+** return all stops in a geo bounding box
+* Should be developed in Node
+* Should be covered with tests
+* Free to use any storage mechanism you find suitable
+* A big plus would be a minimal website that uses the service, where you can add a station at a selected location on map

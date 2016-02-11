@@ -1,0 +1,18 @@
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu-14.04-amd64"
+  config.vm.box_check_update = false
+
+  config.vm.network "forwarded_port", guest: 8088, host: 8089
+  config.vm.network "private_network", ip: "192.168.50.2",
+    virtualbox__intnet: "vms-only"
+
+  config.vm.synced_folder "./data", "/vagrant_data"
+
+  config.vm.provision "shell", inline: <<-SHELL
+      chmod +x /vagrant_data/setup.sh
+      /bin/bash /vagrant_data/setup.sh
+
+			chmod +x /vagrant_data/start-web.sh
+		  /bin/bash /vagrant_data/start-web.sh
+  SHELL
+end
