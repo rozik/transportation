@@ -1,5 +1,6 @@
 var serverConfig = require('./config/serverConfig');
 var stationService = require('./stationService');
+var stationRepository = require('./stationRepository');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -43,6 +44,18 @@ router.get('/stations/:id', function (req, res) {
 	}
 
 	stationService.getById(req.params.id, onErrorRes, onSuccessRes);
+});
+
+router.get('/stations*', function (req, res) {	
+	var onSuccessRes = function(data) {
+		onSuccess(res, data);
+	}
+
+	var onErrorRes = function(data) {
+		onError(res, data);
+	}
+
+	stationRepository.getAll(onErrorRes, onSuccessRes);
 });
 
 router.post('/stations', function (req, res) {

@@ -13,6 +13,7 @@ var stationService = function () {
         }
     }
 
+    // validate!
     var add = function(station, onError, onSuccess) {
         var onSuccessAdd = function(data) {
             if(onSuccess) {

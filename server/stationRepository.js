@@ -20,6 +20,17 @@ var stationRepository = function () {
             });
     }
 
+    var getAll = function(onError, onSuccess) {
+        db.func('transport.getStations')
+            .then(function (data) {
+                result = data;
+                onSuccess(result);
+            })
+            .catch(function (error) {
+                onError(error);
+            });
+    }
+
     var add = function(station, onError, onSuccess) {
         db.func('transport.addStation', [
                     station.name,
@@ -42,6 +53,7 @@ var stationRepository = function () {
 
     return {
         getById: getById,
+        getAll: getAll,
         add: add
     };
 };
