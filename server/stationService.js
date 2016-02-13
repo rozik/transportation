@@ -1,3 +1,4 @@
+var stationModule = require('./model/station');
 var stationRepository = require('./stationRepository');
 var validate = require('./validation');
 var serverConfig = require('./config/serverConfig');
@@ -13,15 +14,23 @@ var stationService = function () {
         }
     }
 
-    // validate!
     var add = function(station, onError, onSuccess) {
-        var onSuccessAdd = function(data) {
-            if(onSuccess) {
-                var resourceUri = {"url":serverConfig.getFullUrlFor('/stations/' + data.id)}
-                onSuccess(resourceUri);
+        var s = stationModule.init(station.name, station.latitude, station.longitude);
+        if(s.isValid()) {
+            var onSuccessAdd = function(data) {
+                if(onSuccess) {
+                    var resourceUri = {"uri":serverConfig.getFullUrlFor('/stations/' + data.id)}
+                    onSuccess(resourceUri);
+                }
             }
+            stationRepository.add(station, onError, onSuccessAdd);
+        } else {
+            var error = {
+                'type' : 'validation',
+                'message' : 'Invalid parameter. name: a non empty string; latitude: [-90 .. 90]; longitude: [-180 .. 180]'
+            };
+            onError(error);   
         }
-        stationRepository.add(station, onError, onSuccessAdd);
     }
 
     return {

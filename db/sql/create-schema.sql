@@ -46,6 +46,18 @@ CREATE OR REPLACE FUNCTION transport.getStationById(
 	$$ 
 	LANGUAGE 'sql';
 
+CREATE OR REPLACE FUNCTION transport.getStations()
+	RETURNS SETOF transport.station
+	AS $$
+    	SELECT  id,
+    			name,
+    			latitude,
+    			longitude
+    	FROM 	transport.station
+    	WHERE 	1=1;
+	$$ 
+	LANGUAGE 'sql';
+
 CREATE OR REPLACE FUNCTION transport.addStation(
 			name 		VARCHAR(256),
 			latitude 	NUMERIC(8, 6),
