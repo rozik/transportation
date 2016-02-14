@@ -67,7 +67,14 @@ var stationRepository = function () {
     var getSchedule = function(station, stationId, onError, onSuccess) {
         db.func('transport.getStationSchedule', [stationId])
             .then(function (data) {
-                station.schedule = data;
+                station.schedule = data.map(function(scheduleEntry, index) {
+                    var formattedScheduleEntry = {
+                        lineName: scheduleEntry.line_name,
+                        departureTime: scheduleEntry.departure_time
+                    };
+                    return formattedScheduleEntry;
+                });
+
                 onSuccess(station);
             })
             .catch(function (error) {

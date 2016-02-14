@@ -31,6 +31,7 @@ describe('stationSpec', function () {
             var actualStation = JSON.parse(body);
             expect(response.statusCode).toEqual(200);
             expect(actualStation).toEqual({"id":1,"name":"station1","latitude":"1.123456","longitude":"111.123456"});
+            expect(actualStation.hasOwnProperty('schedule')).toBe(false);
             done();
         });
     });
