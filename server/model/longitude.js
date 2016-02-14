@@ -1,23 +1,20 @@
-var longitude = function() {
+var Longitude = function(value) {
 
+	var that = this;
 	var longitude;
 
-	var init = function(value) {
-		this.longitude = value;
-		return this;
-	}
+	this.longitude = value;
 
 	var isValid = function() {
 		// validation of positions afer the decimal point is missing
-		return (this.longitude !== null)
-				&& (this.longitude >= -180)
-				&& (this.longitude <= 180);
+		return (that.longitude !== null)
+				&& (that.longitude >= -180)
+				&& (that.longitude <= 180);
 	}
 
 	return {
-		init: init,
 		isValid: isValid
 	}
 }
 
-module.exports = longitude();
+module.exports = Longitude;

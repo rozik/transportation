@@ -70,16 +70,16 @@ router.get('/stations*', function (req, res) {
 		onError(res, data);
 	}
 
-	// validation
+console.log(req.query.filter)
 	if(Object.keys(req.query).length > 0) {
-		if((req.query.latitude1)
-			&& (req.query.latitude2)
-			&& (req.query.longitude1)
-			&& (req.query.longitude2)) {
-				var GeoCoordinate = require('./model/geoCoordinate');
-				var geoCoordinate1 = new GeoCoordinate(req.query.latitude1, req.query.longitude1);
-			    var geoCoordinate2 = new GeoCoordinate(req.query.latitude2, req.query.longitude2);
-				stationRepository.getStationsInsideGeoBox(geoCoordinate1, geoCoordinate2, onErrorRes, onSuccessRes);
+		if(req.query.filter) {
+				stationService.getStationsInsideGeoBox(
+					req.query.latitude1,
+					req.query.longitude1,
+					req.query.latitude2,
+					req.query.longitude2,
+					onErrorRes,
+					onSuccessRes);
 		}
 	} else {
 		stationRepository.getAll(onErrorRes, onSuccessRes);

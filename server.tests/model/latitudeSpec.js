@@ -1,18 +1,18 @@
-var latitude = require('../../server/model/latitude');
+var Latitude = require('../../server/model/Latitude');
 
 describe('latitudeSpec', function () {
 
     // latitude:  [-90 .. 90]
     it("should validate a latitude", function() {
-        expect(latitude.init(1.123456).isValid()).toBe(true);
-        expect(latitude.init(-90).isValid()).toBe(true);
-        expect(latitude.init(90).isValid()).toBe(true);
-        expect(latitude.init(0).isValid()).toBe(true);
+        expect(new Latitude(1.123456).isValid()).toBe(true);
+        expect(new Latitude(-90).isValid()).toBe(true);
+        expect(new Latitude(90).isValid()).toBe(true);
+        expect(new Latitude(0).isValid()).toBe(true);
 
-        expect(latitude.init().isValid()).toBe(false);
-        expect(latitude.init(null).isValid()).toBe(false);
-        expect(latitude.init(-91).isValid()).toBe(false);
-        expect(latitude.init(91).isValid()).toBe(false);
-        expect(latitude.init('abc').isValid()).toBe(false);
+        expect(new Latitude().isValid()).toBe(false);
+        expect(new Latitude(null).isValid()).toBe(false);
+        expect(new Latitude(-91).isValid()).toBe(false);
+        expect(new Latitude(91).isValid()).toBe(false);
+        expect(new Latitude('abc').isValid()).toBe(false);
     });
 });

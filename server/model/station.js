@@ -1,5 +1,5 @@
-var latitudeModule = require('./latitude');
-var longitudeModule = require('./longitude');
+var Latitude = require('./latitude');
+var Longitude = require('./longitude');
 
 var station = function() {
 
@@ -19,8 +19,8 @@ var station = function() {
 		if(this.name) {
 			isNameValid = true;
 		}
-		var isLatitudeValid = latitudeModule.init(this.latitude).isValid();
-		var isLongitudeValid = longitudeModule.init(this.longitude).isValid();
+		var isLatitudeValid =  new Latitude(this.latitude).isValid();
+		var isLongitudeValid = new Longitude(this.longitude).isValid();
 
 		return isNameValid
 				&& isLongitudeValid
