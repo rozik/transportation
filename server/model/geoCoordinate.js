@@ -1,6 +1,6 @@
 var GeoCoordinate = function(latitude, longitude) {
 
-	var self = this;
+	var that = this;
 
 	var latitude,
 		longitude;
@@ -9,11 +9,11 @@ var GeoCoordinate = function(latitude, longitude) {
 	this.longitude = longitude;
 
 	var getLatitude = function() {
-		return self.latitude;
+		return that.latitude;
 	}
 
 	var getLongitude = function() {
-		return self.longitude;
+		return that.longitude;
 	}
 
 	return {
