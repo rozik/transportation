@@ -115,12 +115,27 @@ describe('stationSpec', function () {
         });
     });
 
-    it("should delete a station", function(done) {
+    it("should delete a station", function(doneTest) {
         request.del(serverConfig.getFullUrlFor('/stations/1'), function(error, response, body){
             expect(response.statusCode).toEqual(200);
+    
+            pg.connect(databaseConfig.getConnectionString(), function(err, client, done){
+                if(err){
+                    console.log('error: ', err);
+                }
+                var sql = "SELECT * FROM transport.station WHERE id = 1;";
+                client.query(sql, function(err, result){
+                    expect(result.rowCount).toEqual(1);
+                    expect(result.rows[0].id).toEqual(1);
+                    expect(result.rows[0].is_deleted).toEqual(true);
+                    done();
+                    doneTest();
 
-            // test item in the DB
-            done();
+                    if(err) {
+                        console.log('error: ', err);
+                    }
+                });
+            });
         });
     });
 
