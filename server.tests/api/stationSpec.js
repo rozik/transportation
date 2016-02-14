@@ -77,7 +77,7 @@ describe('stationSpec', function () {
         });
     });
 
-    it("should create a new station", function(done) {
+    it("should create a new station", function(doneTest) {
         var requestBody =  {
             name: 'abc',
             latitude: 1.123456,
@@ -92,7 +92,24 @@ describe('stationSpec', function () {
             function(error, response, body){
                 expect(response.statusCode).toEqual(200);
                 expect(body).toEqual({"uri":serverConfig.getFullUrlFor('/stations/3')}); 
-                done();
+
+                pg.connect(databaseConfig.getConnectionString(), function(err, client, done){
+                    if(err){
+                        console.log('error: ', err);
+                    }
+                    var sql = "SELECT * FROM transport.station WHERE id = 3;";
+                    client.query(sql, function(err, result){
+                        expect(result.rowCount).toEqual(1);
+                        expect(result.rows[0].id).toEqual(3);
+                        expect(result.rows[0].is_deleted).toEqual(false);
+                        done();
+                        doneTest();
+
+                        if(err) {
+                            console.log('error: ', err);
+                        }
+                    });
+                });
         });
     });
 
