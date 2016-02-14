@@ -29,7 +29,7 @@ ALTER TABLE transport.station_line ADD CONSTRAINT fk_station_line_line
 	FOREIGN KEY (line_id) REFERENCES transport.line(id);
 
 ALTER TABLE transport.station_line ADD CONSTRAINT uc_station_id_line_id_departure_time
-	UNIQUE(station_id, line_id, departure_time);
+	UNIQUE(line_id, departure_time);
 
 CREATE OR REPLACE FUNCTION transport.getStationById(
 	INOUT	id			INTEGER,
@@ -85,5 +85,25 @@ CREATE OR REPLACE FUNCTION transport.addStation(
     	INSERT INTO transport.station (name, latitude, longitude)
 		VALUES ($1, $2, $3)
 		RETURNING id;
+	$$ 
+	LANGUAGE 'sql';
+
+CREATE TYPE transport.station_schedule as (
+	line_name 	VARCHAR(256),
+	departure_time	TIMETZ
+);
+
+CREATE OR REPLACE FUNCTION transport.getStationSchedule(id INTEGER)
+	RETURNS SETOF transport.station_schedule
+	AS $$
+    	SELECT l.name,
+    		   sl.departure_time
+    	FROM 	   transport.station s
+    	INNER JOIN transport.station_line sl
+    	ON		   sl.station_id = s.id
+    	INNER JOIN transport.line l
+    	ON		   l.id = sl.line_id
+    	WHERE 	   1=1
+    	AND	       s.id = $1;
 	$$ 
 	LANGUAGE 'sql';
