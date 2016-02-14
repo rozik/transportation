@@ -2,7 +2,7 @@ var express = require('express');
 var stationService = require('../../stationService');
 var stationRepository = require('../../stationRepository');
 
-var stationRouter = function() {
+var stationsRouter = function() {
 
 	var onSuccess = function(res, data) {
 		res.json(data);
@@ -24,7 +24,7 @@ var stationRouter = function() {
 
 	var router = express.Router(); 
 
-	router.get('/stations/:id', function (req, res) {	
+	router.get('/:id', function (req, res) {	
 		var onSuccessRes = function(data) {
 			onSuccess(res, data);
 		}
@@ -36,7 +36,7 @@ var stationRouter = function() {
 		stationService.getById(req.params.id, false, onErrorRes, onSuccessRes);
 	});
 
-	router.get('/stations/:id/schedule', function (req, res) {	
+	router.get('/:id/schedule', function (req, res) {	
 		var onSuccessRes = function(data) {
 			onSuccess(res, data);
 		}
@@ -48,7 +48,7 @@ var stationRouter = function() {
 		stationService.getById(req.params.id, true, onErrorRes, onSuccessRes);
 	});
 
-	router.delete('/stations/:id', function (req, res) {	
+	router.delete('/:id', function (req, res) {	
 		var onSuccessRes = function(data) {
 			onSuccess(res, data);
 		}
@@ -60,7 +60,7 @@ var stationRouter = function() {
 		stationService.deleteStation(req.params.id, onErrorRes, onSuccessRes);
 	});
 
-	router.get('/stations*', function (req, res) {	
+	router.get('*', function (req, res) {	
 		var onSuccessRes = function(data) {
 			onSuccess(res, data);
 		}
@@ -84,7 +84,7 @@ var stationRouter = function() {
 		}
 	});
 
-	router.post('/stations', function (req, res) {
+	router.post('', function (req, res) {
 		var onSuccessRes = function(data) {
 			onSuccess(res, data);
 		}
@@ -99,4 +99,4 @@ var stationRouter = function() {
 	return router;
 }
 
-module.exports = stationRouter();
+module.exports = stationsRouter();

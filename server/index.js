@@ -1,11 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var stationRouter = require('./api/router/stationRouter');
+var stationsRouter = require('./api/router/stationsRouter');
 var serverConfig = require('./config/serverConfig');
 
 var app = express();
 app.use(bodyParser.json());
-app.use(serverConfig.getApiUrl(), stationRouter);
+app.use(serverConfig.getApiUrl() + '/stations', stationsRouter);
 
 var server = app.listen(serverConfig.getPort(), serverConfig.getIp(), function () {
 	var host = server.address().address
