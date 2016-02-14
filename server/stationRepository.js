@@ -64,11 +64,23 @@ var stationRepository = function () {
             });
     }
 
+    var getSchedule = function(station, stationId, onError, onSuccess) {
+        db.func('transport.getStationSchedule', [stationId])
+            .then(function (data) {
+                station.schedule = data;
+                onSuccess(station);
+            })
+            .catch(function (error) {
+                onError(error);
+            });
+    }
+
     return {
         getById: getById,
         getAll: getAll,
         getStationsInsideGeoBox: getStationsInsideGeoBox,
-        add: add
+        add: add,
+        getSchedule: getSchedule    
     };
 };
 

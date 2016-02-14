@@ -2,7 +2,7 @@ INSERT INTO transport.station (name, latitude, longitude)
 VALUES
 	('station1', 1.123456, 111.123456),
 	('station2', 2.123456, 112.123456),
-	('station2', 2.123456, 112.123456);
+	('station3', 2.123456, 112.123456);
 
 INSERT INTO transport.line (name)
 VALUES

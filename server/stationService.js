@@ -5,9 +5,19 @@ var serverConfig = require('./config/serverConfig');
 
 var stationService = function () {
 
-    var getById = function(stationId, onError, onSuccess) {
+    var getById = function(stationId, isShowSchedule, onError, onSuccess) {
         if(validate.asPositiveInt(stationId)) {
-            stationRepository.getById(stationId, onError, onSuccess);
+            var onSuccessAll = onSuccess;
+            if(isShowSchedule) {
+                onSuccessAll = function(data) {
+                    if(data.hasOwnProperty('id')) {
+                        stationRepository.getSchedule(data, stationId, onError, onSuccess);
+                    } else {
+                        onSuccess(data);
+                    }
+                }
+            }
+            stationRepository.getById(stationId, onError, onSuccessAll);
         } else {
             var error = {'type' : 'validation', 'message' : 'Invalid parameter. Station ID should be a positive integer.'};
             onError(error);

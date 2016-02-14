@@ -9,6 +9,9 @@ CREATE TABLE transport.station (
 	longitude	NUMERIC(9, 6) 	NOT NULL
 );
 
+ALTER TABLE transport.station ADD CONSTRAINT uc_station_name
+	UNIQUE(name);
+
 CREATE SEQUENCE transport.line_ids;
 
 CREATE TABLE transport.line (
@@ -28,7 +31,7 @@ ALTER TABLE transport.station_line ADD CONSTRAINT fk_station_line_station
 ALTER TABLE transport.station_line ADD CONSTRAINT fk_station_line_line
 	FOREIGN KEY (line_id) REFERENCES transport.line(id);
 
-ALTER TABLE transport.station_line ADD CONSTRAINT uc_station_id_line_id_departure_time
+ALTER TABLE transport.station_line ADD CONSTRAINT uc_line_id_departure_time
 	UNIQUE(line_id, departure_time);
 
 CREATE OR REPLACE FUNCTION transport.getStationById(

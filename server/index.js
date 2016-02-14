@@ -34,6 +34,9 @@ var onError = function(res, error) {
 	res.end(JSON.stringify(body));
 }
 
+
+// --- stations -------------------------------------------------
+
 router.get('/stations/:id', function (req, res) {	
 	var onSuccessRes = function(data) {
 		onSuccess(res, data);
@@ -43,7 +46,19 @@ router.get('/stations/:id', function (req, res) {
 		onError(res, data);
 	}
 
-	stationService.getById(req.params.id, onErrorRes, onSuccessRes);
+	stationService.getById(req.params.id, false, onErrorRes, onSuccessRes);
+});
+
+router.get('/stations/:id/schedule', function (req, res) {	
+	var onSuccessRes = function(data) {
+		onSuccess(res, data);
+	}
+
+	var onErrorRes = function(data) {
+		onError(res, data);
+	}
+
+	stationService.getById(req.params.id, true, onErrorRes, onSuccessRes);
 });
 
 router.get('/stations*', function (req, res) {	
