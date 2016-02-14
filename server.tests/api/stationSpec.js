@@ -26,7 +26,7 @@ describe('stationSpec', function () {
         });
     });
 
-    it("should return data for an existing station", function(done) {
+    it("should return data for an existing station without schedule", function(done) {
         request(serverConfig.getFullUrlFor('/stations/1'), function(error, response, body){
             var actualStation = JSON.parse(body);
             expect(response.statusCode).toEqual(200);
@@ -70,8 +70,8 @@ describe('stationSpec', function () {
             var actualStation = JSON.parse(body);
             expect(response.statusCode).toEqual(200);
             expect(actualStation).toEqual([
-                {"id":1,"name":"station1","latitude":"1.123456","longitude":"111.123456"},
-                {"id":2,"name":"station2","latitude":"2.123456","longitude":"123.123456"}
+                {"id":1,"name":"station1","latitude":"1.123456","longitude":"111.123456","isDeleted":false},
+                {"id":2,"name":"station2","latitude":"2.123456","longitude":"123.123456","isDeleted":false}
             ]);
             done();
         });
@@ -112,6 +112,25 @@ describe('stationSpec', function () {
                 expect(response.statusCode).toEqual(400);
                 expect(body).toEqual({ type: 'validation', message: 'Invalid parameter. name: a non empty string; latitude: [-90 .. 90]; longitude: [-180 .. 180]' });
                 done();
+        });
+    });
+
+    it("should delete a station", function(done) {
+        request.del(serverConfig.getFullUrlFor('/stations/1'), function(error, response, body){
+            expect(response.statusCode).toEqual(200);
+
+            // test item in the DB
+            done();
+        });
+    });
+
+    it("should return a validation error if id of a station to be deleted is invalid", function(done) {
+        request.del(serverConfig.getFullUrlFor('/stations/a'), function(error, response, body){
+            expect(response.statusCode).toEqual(400);
+            var error = JSON.parse(body);
+            expect(error.type).toBe('validation');
+            expect(error.message).toBe('Invalid parameter. Station ID should be a positive integer.');
+            done();
         });
     });
 });

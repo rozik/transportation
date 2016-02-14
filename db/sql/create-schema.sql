@@ -6,7 +6,8 @@ CREATE TABLE transport.station (
 	id        	INTEGER 		PRIMARY KEY DEFAULT NEXTVAL('transport.station_ids'),
 	name      	VARCHAR(256)    NOT NULL,
 	latitude 	NUMERIC(8, 6)  	NOT NULL,
-	longitude	NUMERIC(9, 6) 	NOT NULL
+	longitude	NUMERIC(9, 6) 	NOT NULL,
+	is_deleted	BOOLEAN			NOT NULL	DEFAULT false
 );
 
 ALTER TABLE transport.station ADD CONSTRAINT uc_station_name
@@ -45,7 +46,8 @@ CREATE OR REPLACE FUNCTION transport.getStationById(
     			latitude,
     			longitude
     	FROM 	transport.station
-    	WHERE 	id = $1;
+    	WHERE 	id = $1
+    	AND		is_deleted = false;
 	$$ 
 	LANGUAGE 'sql';
 
@@ -55,9 +57,11 @@ CREATE OR REPLACE FUNCTION transport.getStations()
     	SELECT  id,
     			name,
     			latitude,
-    			longitude
+    			longitude,
+    			is_deleted
     	FROM 	transport.station
-    	WHERE 	1=1;
+    	WHERE 	1=1
+    	AND		is_deleted = false;
 	$$ 
 	LANGUAGE 'sql';
 
@@ -72,10 +76,12 @@ CREATE OR REPLACE FUNCTION transport.getStationsInsideGeoBox(
     	SELECT  s.id,
     			s.name,
     			s.latitude,
-    			s.longitude
+    			s.longitude,
+    			s.is_deleted
     	FROM 	transport.station AS s
     	WHERE 	(s.latitude BETWEEN SYMMETRIC $1 AND $3)
     	AND		(s.longitude BETWEEN SYMMETRIC $2 AND $4)
+    	AND     s.is_deleted = false
 	$$ 
 	LANGUAGE 'sql';
 
@@ -88,6 +94,15 @@ CREATE OR REPLACE FUNCTION transport.addStation(
     	INSERT INTO transport.station (name, latitude, longitude)
 		VALUES ($1, $2, $3)
 		RETURNING id;
+	$$ 
+	LANGUAGE 'sql';
+
+CREATE OR REPLACE FUNCTION transport.deleteStation(id INTEGER)
+    RETURNS VOID
+	AS $$
+    	UPDATE transport.station
+		SET    is_deleted = true
+		WHERE  id = $1
 	$$ 
 	LANGUAGE 'sql';
 
@@ -107,6 +122,7 @@ CREATE OR REPLACE FUNCTION transport.getStationSchedule(id INTEGER)
     	INNER JOIN transport.line l
     	ON		   l.id = sl.line_id
     	WHERE 	   1=1
-    	AND	       s.id = $1;
+    	AND	       s.id = $1
+    	AND		   s.is_deleted = false;
 	$$ 
 	LANGUAGE 'sql';

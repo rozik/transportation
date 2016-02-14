@@ -61,6 +61,18 @@ router.get('/stations/:id/schedule', function (req, res) {
 	stationService.getById(req.params.id, true, onErrorRes, onSuccessRes);
 });
 
+router.delete('/stations/:id', function (req, res) {	
+	var onSuccessRes = function(data) {
+		onSuccess(res, data);
+	}
+
+	var onErrorRes = function(data) {
+		onError(res, data);
+	}
+
+	stationService.deleteStation(req.params.id, onErrorRes, onSuccessRes);
+});
+
 router.get('/stations*', function (req, res) {	
 	var onSuccessRes = function(data) {
 		onSuccess(res, data);

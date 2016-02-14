@@ -70,10 +70,20 @@ var stationService = function () {
         }
     }
 
+    var deleteStation = function(stationId, onError, onSuccess) {
+        if(validate.asPositiveInt(stationId)) {
+           stationRepository.deleteStation(stationId, onError, onSuccess);
+        } else {
+            var error = {'type' : 'validation', 'message' : 'Invalid parameter. Station ID should be a positive integer.'};
+            onError(error);
+        }
+    }
+
     return {
         getById: getById,
         add: add,
-        getStationsInsideGeoBox: getStationsInsideGeoBox
+        getStationsInsideGeoBox: getStationsInsideGeoBox,
+        deleteStation: deleteStation
     };
 };
 

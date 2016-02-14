@@ -24,6 +24,16 @@ var stationRepository = function () {
     var getAll = function(onError, onSuccess) {
         db.func('transport.getStations')
             .then(function (data) {
+                data = data.map(function(station, index) {
+                    var formattedStation = {
+                        id: station.id,
+                        name: station.name,
+                        latitude: station.latitude,
+                        longitude: station.longitude,
+                        isDeleted: station.is_deleted
+                    };
+                    return formattedStation;
+                });
                 onSuccess(data);
             })
             .catch(function (error) {
@@ -82,12 +92,23 @@ var stationRepository = function () {
             });
     }
 
+    var deleteStation = function(stationId, onError, onSuccess) {
+        db.func('transport.deleteStation', [stationId])
+            .then(function (data) {
+                onSuccess({});
+            })
+            .catch(function (error) {
+                onError(error);
+            });
+    }
+
     return {
         getById: getById,
         getAll: getAll,
         getStationsInsideGeoBox: getStationsInsideGeoBox,
         add: add,
-        getSchedule: getSchedule    
+        deleteStation: deleteStation,
+        getSchedule: getSchedule
     };
 };
 
