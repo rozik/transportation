@@ -58,6 +58,24 @@ CREATE OR REPLACE FUNCTION transport.getStations()
 	$$ 
 	LANGUAGE 'sql';
 
+CREATE OR REPLACE FUNCTION transport.getStationsInsideGeoBox(
+		latitude1 	NUMERIC(8, 6),
+		longitude1	NUMERIC(9, 6),
+		latitude2 	NUMERIC(8, 6),
+		longitude2	NUMERIC(9, 6)
+	)
+	RETURNS SETOF transport.station
+	AS $$
+    	SELECT  s.id,
+    			s.name,
+    			s.latitude,
+    			s.longitude
+    	FROM 	transport.station AS s
+    	WHERE 	(s.latitude BETWEEN SYMMETRIC $1 AND $3)
+    	AND		(s.longitude BETWEEN SYMMETRIC $2 AND $4)
+	$$ 
+	LANGUAGE 'sql';
+
 CREATE OR REPLACE FUNCTION transport.addStation(
 			name 		VARCHAR(256),
 			latitude 	NUMERIC(8, 6),

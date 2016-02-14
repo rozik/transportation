@@ -1,5 +1,6 @@
 var databaseConfig = require('../server/config/databaseConfig');
 var pgp = require('pg-promise')();
+var geoCoordinate = require('./model/geoCoordinate');
 
 var stationRepository = function () {
     var db = pgp(databaseConfig.getConnectionString());
@@ -23,8 +24,20 @@ var stationRepository = function () {
     var getAll = function(onError, onSuccess) {
         db.func('transport.getStations')
             .then(function (data) {
-                result = data;
-                onSuccess(result);
+                onSuccess(data);
+            })
+            .catch(function (error) {
+                onError(error);
+            });
+    }
+
+    var getStationsInsideGeoBox = function(geoCoordinate1, geoCoordinate2, onError, onSuccess) {
+        db.func('transport.getStationsInsideGeoBox', [
+                    geoCoordinate1.getLatitude(), geoCoordinate1.getLongitude(),
+                    geoCoordinate2.getLatitude(), geoCoordinate2.getLongitude()
+            ])
+            .then(function (data) {
+                onSuccess(data);
             })
             .catch(function (error) {
                 onError(error);
@@ -54,6 +67,7 @@ var stationRepository = function () {
     return {
         getById: getById,
         getAll: getAll,
+        getStationsInsideGeoBox: getStationsInsideGeoBox,
         add: add
     };
 };

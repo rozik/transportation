@@ -55,7 +55,20 @@ router.get('/stations*', function (req, res) {
 		onError(res, data);
 	}
 
-	stationRepository.getAll(onErrorRes, onSuccessRes);
+	// validation
+	if(Object.keys(req.query).length > 0) {
+		if((req.query.latitude1)
+			&& (req.query.latitude2)
+			&& (req.query.longitude1)
+			&& (req.query.longitude2)) {
+				var GeoCoordinate = require('./model/geoCoordinate');
+				var geoCoordinate1 = new GeoCoordinate(req.query.latitude1, req.query.longitude1);
+			    var geoCoordinate2 = new GeoCoordinate(req.query.latitude2, req.query.longitude2);
+				stationRepository.getStationsInsideGeoBox(geoCoordinate1, geoCoordinate2, onErrorRes, onSuccessRes);
+		}
+	} else {
+		stationRepository.getAll(onErrorRes, onSuccessRes);
+	}
 });
 
 router.post('/stations', function (req, res) {
