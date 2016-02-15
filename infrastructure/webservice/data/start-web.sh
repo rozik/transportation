@@ -5,6 +5,8 @@ sudo sed -i "s/@127.0.0.1/@192.168.50.1/"  /vagrant_data/web/server/config/datab
 
 # reconfigure test data
 sudo sed -i "s|./db/sql/create-schema.sql|/vagrant_data/db/sql/create-schema.sql|"  /vagrant_data/web/server.tests/config/testDataConfig.js
+sudo sed -i "s|../db/sql/create-schema.sql|/vagrant_data/db/sql/create-schema.sql|"  /vagrant_data/web/server/api/router/commandsRouter.js
+sudo sed -i "s|../db/sql/populate-test-data.sql|/vagrant_data/db/sql/populate-test-data.sql|"  /vagrant_data/web/server/api/router/commandsRouter.js
 
 # a hack to make node running in the background
 sudo screen -d -m node /vagrant_data/web/server/index.js
