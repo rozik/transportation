@@ -4,6 +4,7 @@
 
 * VirtualBox installed
 * Vagrant installed
+* Internet access
 
 Deployment is tested on MacOS X 10.11.3 with Vagrant 1.7.4 and VirtualBox 5.0.10
 
