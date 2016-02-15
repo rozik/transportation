@@ -11,4 +11,5 @@ mkdir -p ./infrastructure/webservice/data/web/server.tests
 cp -r ./server.tests/ ./infrastructure/webservice/data/web/server.tests
 
 cd ./infrastructure/webservice
+vagrant plugin install vagrant-vbguest
 vagrant up
