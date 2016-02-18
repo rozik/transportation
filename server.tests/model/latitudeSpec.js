@@ -1,4 +1,4 @@
-var Latitude = require('../../server/model/Latitude');
+var Latitude = require('../../server/model/latitude');
 
 describe('latitudeSpec', function () {
 

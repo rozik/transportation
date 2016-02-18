@@ -1,6 +1,6 @@
 var databaseConfig = require('../server/config/databaseConfig');
 var pgp = require('pg-promise')();
-var geoCoordinate = require('./model/geoCoordinate');
+var geoCoordinate = require('./model/GeoCoordinate');
 
 var stationRepository = function () {
     var db = pgp(databaseConfig.getConnectionString());

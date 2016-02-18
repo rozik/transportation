@@ -1,25 +1,15 @@
 var GeoCoordinate = function(latitude, longitude) {
-
-	var that = this;
-
-	var latitude,
-		longitude;
-
 	this.latitude = latitude;
 	this.longitude = longitude;
+}
 
-	var getLatitude = function() {
-		return that.latitude;
-	}
+GeoCoordinate.prototype.getLatitude = function() {
+	return this.latitude;
+}
 
-	var getLongitude = function() {
-		return that.longitude;
-	}
 
-	return {
-		getLatitude: getLatitude,
-		getLongitude: getLongitude
-	}
+GeoCoordinate.prototype.getLongitude = function() {
+	return this.longitude;
 }
 
 module.exports = GeoCoordinate;

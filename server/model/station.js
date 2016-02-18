@@ -1,36 +1,23 @@
-var Latitude = require('./latitude');
-var Longitude = require('./longitude');
+var Latitude = require('./Latitude');
+var Longitude = require('./Longitude');
 
-var station = function() {
-
-	var name,
-		latitude,
-		longitude;
-
-	var init = function(name, latitude, longitude) {
-		this.name = name;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		return this;
-	}
-
-	var isValid = function() {
-		var isNameValid = false;
-		if(this.name) {
-			isNameValid = true;
-		}
-		var isLatitudeValid =  new Latitude(this.latitude).isValid();
-		var isLongitudeValid = new Longitude(this.longitude).isValid();
-
-		return isNameValid
-				&& isLongitudeValid
-				&& isLatitudeValid;
-	}
-
-	return {
-		init: init,
-		isValid: isValid
-	}
+var Station = function(name, latitude, longitude) {
+	this.name = name;
+	this.latitude = new Latitude(latitude);
+	this.longitude = new Longitude(longitude);
 };
 
-module.exports = station();
+Station.prototype.isValid = function() {
+	var isNameValid = false;
+	if(this.name) {
+		isNameValid = true;
+	}
+	var isLatitudeValid =  this.latitude.isValid();
+	var isLongitudeValid = this.longitude.isValid();
+
+	return isNameValid
+			&& isLongitudeValid
+			&& isLatitudeValid;
+}
+
+module.exports = Station;

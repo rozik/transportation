@@ -1,20 +1,12 @@
 var Latitude = function(value) {
-
-	var that = this;
-	var latitude;
-
 	this.latitude = value;
+};
 
-	var isValid = function() {
-		// validation of positions afer the decimal point is missing
-		return (that.latitude !== null)
-				&& (that.latitude >= -90)
-				&& (that.latitude <= 90);
-	}
-
-	return {
-		isValid: isValid
-	}
+Latitude.prototype.isValid = function() {
+	// validation of positions afer the decimal point is missing
+	return (this.latitude !== null)
+			&& (this.latitude >= -90)
+			&& (this.latitude <= 90);
 }
 
 module.exports = Latitude;

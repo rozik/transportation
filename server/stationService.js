@@ -1,8 +1,8 @@
-var stationModule = require('./model/station');
+var Station = require('./model/Station');
 var stationRepository = require('./stationRepository');
 var validate = require('./validation');
 var serverConfig = require('./config/serverConfig');
-var GeoCoordinate = require('./model/geoCoordinate');
+var GeoCoordinate = require('./model/GeoCoordinate');
 var Latitude = require('./model/Latitude');
 var Longitude = require('./model/Longitude');
 
@@ -28,7 +28,7 @@ var stationService = function () {
     }
 
     var add = function(station, onError, onSuccess) {
-        var s = stationModule.init(station.name, station.latitude, station.longitude);
+        var s = new Station(station.name, station.latitude, station.longitude);
         if(s.isValid()) {
             var onSuccessAdd = function(data) {
                 if(onSuccess) {
@@ -42,7 +42,7 @@ var stationService = function () {
                 'type' : 'validation',
                 'message' : 'Invalid parameter. name: a non empty string; latitude: [-90 .. 90]; longitude: [-180 .. 180]'
             };
-            onError(error);   
+            onError(error);
         }
     }
 

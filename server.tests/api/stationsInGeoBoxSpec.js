@@ -4,7 +4,7 @@ var databaseConfig = require('../../server/config/databaseConfig');
 var testDataConfig = require('../config/testDataConfig');
 var pg = require('pg');
 var fs = require('fs');
-var geoCoordinate = require('../../server/model/geoCoordinate');
+var geoCoordinate = require('../../server/model/GeoCoordinate');
 
 describe('stationsInGeoBoxSpec', function () {
 	beforeEach(function(doneBeforeEach) {
